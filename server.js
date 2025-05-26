@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { sql } from "./config/db.js";
 import rateLimiterMiddleware from "./middlewares/rateLimiter.js";
+import job from "./config/cron.js";
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 app.use(rateLimiterMiddleware);
+
+job.start(); // Start the cron job
 
 app.get("/api/transactions/:userId", async (req, res) => {
   try {
